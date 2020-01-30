@@ -15,6 +15,6 @@ class Employee(db.Entity):
     state = Optional(str)
 
 
-db.bind(provider='postgres', user='postgres', password='pgsql', host='192.168.30.94', database='emp')
+db.bind(provider='postgres', user='postgres', password='pgsql', host='192.168.30.26', database='emp')
 db.generate_mapping(create_tables=True)
 # set_sql_debug(True)
