@@ -59,47 +59,54 @@ class EmployeeService:
 
     @db_session
     def getbyfirstname(firstname):
-        employee = Employee.get(first_name=firstname)
-        if employee == None:
+        _emps = Employee.select_by_sql("select id, first_name, last_name, address1, address2, zipcode, city, state from employee where first_name = '" + firstname + "' order by id")
+        if _emps == None:
             result = {
                 "status": "failed",
                 "message": "Employee with first_name '" + firstname + "' was not found!"
             }
             return result
         else:
-            dict_emp = {
-                    "id": employee.id,
-                    "first_name": employee.first_name,
-                    "last_name": employee.last_name,
-                    "address1": employee.address1,
-                    "address2": employee.address2,
-                    "zipcode": employee.zipcode,
-                    "city": employee.city,
-                    "state": employee.state  
+            emps_array = []
+            for emp in _emps:
+                dict_emp = {
+                    "id": str(emp.id),
+                    "first_name": emp.first_name,
+                    "last_name": emp.last_name,
+                    "address1": emp.address1,
+                    "address2": emp.address2,
+                    "zipcode": emp.zipcode,
+                    "city": emp.city,
+                    "state": emp.state  
                 }
-            return dict_emp
+                emps_array.append(dict_emp)
+            return emps_array
+
  
     @db_session
     def getbylastname(lastname):
-        employee = Employee.get(last_name=lastname)
-        if employee == None:
+        _emps = Employee.select_by_sql("select id, first_name, last_name, address1, address2, zipcode, city, state from employee where last_name = '" + lastname + "' order by id")
+        if _emps == None:
             result = {
                 "status": "failed",
-                "message": "Employee with first_name '" + lastname + "' was not found!"
+                "message": "Employee with last_name '" + lastname + "' was not found!"
             }
-            return result        
+            return result
         else:
-            dict_emp = {
-                    "id": employee.id,
-                    "first_name": employee.first_name,
-                    "last_name": employee.last_name,
-                    "address1": employee.address1,
-                    "address2": employee.address2,
-                    "zipcode": employee.zipcode,
-                    "city": employee.city,
-                    "state": employee.state  
+            emps_array = []
+            for emp in _emps:
+                dict_emp = {
+                    "id": str(emp.id),
+                    "first_name": emp.first_name,
+                    "last_name": emp.last_name,
+                    "address1": emp.address1,
+                    "address2": emp.address2,
+                    "zipcode": emp.zipcode,
+                    "city": emp.city,
+                    "state": emp.state  
                 }
-            return dict_emp
+                emps_array.append(dict_emp)
+            return emps_array
     
     @db_session
     def create(_employee):
@@ -118,7 +125,7 @@ class EmployeeService:
             "status": "success",
             "message": "Success added employee",
             "employee": {
-                "id": employee,
+                "id": employee.id,
                 "first_name": employee.first_name,
                 "last_name": employee.last_name,
                 "address1": employee.address1,
